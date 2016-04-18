@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4381C0F5B34830AA0B984D88 /* Pods_BasicComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B4B5718AC1A94E673AFBF72 /* Pods_BasicComponents.framework */; };
-		52B2DADE1CC4C9360069BAA2 /* BasicComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 52B2DADD1CC4C9360069BAA2 /* BasicComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		52B2DAE61CC4CB180069BAA2 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B2DAE51CC4CB180069BAA2 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -16,7 +15,6 @@
 		16D65959469D9D19B0EF1F48 /* Pods-BasicComponents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasicComponents.release.xcconfig"; path = "Pods/Target Support Files/Pods-BasicComponents/Pods-BasicComponents.release.xcconfig"; sourceTree = "<group>"; };
 		3ED6A4788C41712299A929BE /* Pods-BasicComponents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasicComponents.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BasicComponents/Pods-BasicComponents.debug.xcconfig"; sourceTree = "<group>"; };
 		52B2DADA1CC4C9360069BAA2 /* BasicComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BasicComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		52B2DADD1CC4C9360069BAA2 /* BasicComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicComponents.h; sourceTree = "<group>"; };
 		52B2DADF1CC4C9360069BAA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52B2DAE51CC4CB180069BAA2 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		9B4B5718AC1A94E673AFBF72 /* Pods_BasicComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BasicComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,7 +62,6 @@
 		52B2DAE71CC4CB2B0069BAA2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				52B2DADD1CC4C9360069BAA2 /* BasicComponents.h */,
 				52B2DADF1CC4C9360069BAA2 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -102,7 +99,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52B2DADE1CC4C9360069BAA2 /* BasicComponents.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
