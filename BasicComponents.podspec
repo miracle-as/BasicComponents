@@ -7,12 +7,12 @@ Pod::Spec.new do |s|
 
   s.license      = { :type => "MIT", :file => "LICENSE" }
 
-  s.author             = { "Lasse Løvdahl" => "lasse.loevdahl@gmail.com" }
+  s.author             = { "Lasse Løvdahl" => "llo@miracle.dk" }
   # s.social_media_url   = "http://twitter.com/Lasse Løvdahl"
 
   s.ios.deployment_target = "8.0"
 
-  s.source       = { :git => "https://loevdahl@bitbucket.org/loevdahl/basiccomponents.git", :tag => s.version.to_s }
+  s.source       = { :git => "https://loevdahl@bitbucket.org/loevdahl/basiccomponents.git", :tag => "#{s.version}" }
 
   s.source_files  = "BasicComponents/**/*.{swift}"
 
