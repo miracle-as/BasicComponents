@@ -12,15 +12,16 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = "8.0"
 
-  s.source       = { :git => "https://loevdahl@bitbucket.org/loevdahl/basiccomponents.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://loevdahl@bitbucket.org/loevdahl/basiccomponents.git", :tag => s.version.to_s }
 
   s.source_files  = "BasicComponents/**/*.{swift}"
 
   s.framework  = "UIKit"
-
+  s.frameworks = 'Foundation'
+  
   s.requires_arc = true
 
   s.dependency "Sugar", "~> 1.0"
 
-  s.resources = "BasicComponents/**/*.{png,jpeg,jpg,storyboard,xib}"
+  # s.resources = "BasicComponents/**/*.{png,jpeg,jpg,storyboard,xib}"
 end
