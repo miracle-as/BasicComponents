@@ -8,12 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		4381C0F5B34830AA0B984D88 /* Pods_BasicComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B4B5718AC1A94E673AFBF72 /* Pods_BasicComponents.framework */; };
+		520BF05F1CC63188008D2A6A /* CoreDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF05E1CC63188008D2A6A /* CoreDataTableViewController.swift */; };
+		520BF0611CC63F20008D2A6A /* UIView+Circular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF0601CC63F20008D2A6A /* UIView+Circular.swift */; };
+		520BF0641CC63FBF008D2A6A /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF0631CC63FBF008D2A6A /* String+Utils.swift */; };
+		520BF06C1CC65BD9008D2A6A /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF06B1CC65BD9008D2A6A /* UIViewController+Alert.swift */; };
 		52B2DAE61CC4CB180069BAA2 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B2DAE51CC4CB180069BAA2 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		16D65959469D9D19B0EF1F48 /* Pods-BasicComponents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasicComponents.release.xcconfig"; path = "Pods/Target Support Files/Pods-BasicComponents/Pods-BasicComponents.release.xcconfig"; sourceTree = "<group>"; };
 		3ED6A4788C41712299A929BE /* Pods-BasicComponents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasicComponents.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BasicComponents/Pods-BasicComponents.debug.xcconfig"; sourceTree = "<group>"; };
+		520BF05E1CC63188008D2A6A /* CoreDataTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTableViewController.swift; sourceTree = "<group>"; };
+		520BF0601CC63F20008D2A6A /* UIView+Circular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Circular.swift"; sourceTree = "<group>"; };
+		520BF0631CC63FBF008D2A6A /* String+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Utils.swift"; sourceTree = "<group>"; };
+		520BF06B1CC65BD9008D2A6A /* UIViewController+Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		52B2DADA1CC4C9360069BAA2 /* BasicComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BasicComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52B2DADF1CC4C9360069BAA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52B2DAE51CC4CB180069BAA2 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -53,6 +61,9 @@
 		52B2DADC1CC4C9360069BAA2 /* BasicComponents */ = {
 			isa = PBXGroup;
 			children = (
+				520BF0631CC63FBF008D2A6A /* String+Utils.swift */,
+				520BF0601CC63F20008D2A6A /* UIView+Circular.swift */,
+				520BF06B1CC65BD9008D2A6A /* UIViewController+Alert.swift */,
 				52B2DAE81CC4CB350069BAA2 /* Models */,
 				52B2DAE71CC4CB2B0069BAA2 /* Supporting Files */,
 			);
@@ -71,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				52B2DAE51CC4CB180069BAA2 /* CoreDataManager.swift */,
+				520BF05E1CC63188008D2A6A /* CoreDataTableViewController.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -204,7 +216,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				520BF06C1CC65BD9008D2A6A /* UIViewController+Alert.swift in Sources */,
+				520BF0641CC63FBF008D2A6A /* String+Utils.swift in Sources */,
+				520BF05F1CC63188008D2A6A /* CoreDataTableViewController.swift in Sources */,
 				52B2DAE61CC4CB180069BAA2 /* CoreDataManager.swift in Sources */,
+				520BF0611CC63F20008D2A6A /* UIView+Circular.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

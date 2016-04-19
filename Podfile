@@ -1,8 +1,9 @@
-# Uncomment this line to define a global platform for your project
 platform :ios, '8.0'
 use_frameworks!
 
 target 'BasicComponents' do
-  pod 'Sugar'
+  #  pod 'AsyncSwift'
+  pod 'Sugar',        '~> 1.0'
+  pod 'DynamicColor', '~> 2.0'
+  pod 'Whisper',      '~> 2.0'
 end
-

@@ -84,8 +84,12 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-BasicComponents/DynamicColor.framework"
   install_framework "Pods-BasicComponents/Sugar.framework"
+  install_framework "Pods-BasicComponents/Whisper.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-BasicComponents/DynamicColor.framework"
   install_framework "Pods-BasicComponents/Sugar.framework"
+  install_framework "Pods-BasicComponents/Whisper.framework"
 fi

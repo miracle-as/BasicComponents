@@ -48,7 +48,7 @@ public class CoreDataManager {
 	}()
 
 
-	private lazy var managedObjectModel: NSManagedObjectModel = {
+  private lazy var managedObjectModel: NSManagedObjectModel = {
 		let modelURL = NSBundle.mainBundle().URLForResource(Application.executable, withExtension: "momd")!
 		return NSManagedObjectModel(contentsOfURL: modelURL)!
 	}()
@@ -124,11 +124,6 @@ public extension CoreDataManager {
 				compleated()
 			}
 	}
-
-
-//	static func saveInBackgroundContext(block:(context: NSManagedObjectContext) -> Void) {
-//		saveInBackgroundContext(block, compleated: .None)
-//	}
 
 
 	public static func saveInBackgroundContext(inContext block:(context: NSManagedObjectContext) -> Void, compleated: () -> Void) {
@@ -224,7 +219,7 @@ public extension NSManagedObject {
 				}
 				return entity
 			} else {
-				let entity = createEntity(inContext) as! T // swiftlint:disable:this force_cast
+        let entity = createEntity(inContext) as! T // swiftlint:disable:this force_cast
 
 				if let v = hasValue as? AnyObject {
 					entity.setValue(v, forKeyPath: whereProperty)
