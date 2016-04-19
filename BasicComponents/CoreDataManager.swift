@@ -10,19 +10,19 @@ import Foundation
 import CoreData
 import Sugar
 
-class CoreDataManager {
+public class CoreDataManager {
 
-	static let sharedInstance = CoreDataManager()
+	public static let sharedInstance = CoreDataManager()
 
 	private init() {}
 
-	enum DataChanges {
+	public enum DataChanges {
 		case Deleted([NSManagedObject])
 		case Updated([NSManagedObject])
 		case Created([NSManagedObject])
 	}
 
-	class func onDataChanges(block: DataChanges -> Void) -> NSObjectProtocol {
+	public class func onDataChanges(block: DataChanges -> Void) -> NSObjectProtocol {
 		return NSNotificationCenter.defaultCenter().addObserverForName(
 			NSManagedObjectContextObjectsDidChangeNotification,
 			object: CoreDataManager.managedObjectContext,
@@ -103,20 +103,20 @@ class CoreDataManager {
 		}
 	}
 
-	class var managedObjectContext: NSManagedObjectContext {
+	public class var managedObjectContext: NSManagedObjectContext {
 		return sharedInstance.managedObjectContext
 	}
 }
 
 
-extension CoreDataManager {
+public extension CoreDataManager {
 
-	static func saveInMainContext(@noescape block:(context: NSManagedObjectContext) -> Void) {
+	public static func saveInMainContext(@noescape block:(context: NSManagedObjectContext) -> Void) {
 		saveInMainContext(inContext: block, compleated: .None)
 	}
 
 
-	static func saveInMainContext(
+	public static func saveInMainContext(
 		@noescape inContext block:(context: NSManagedObjectContext) -> Void, compleated: (() -> Void)?) {
 			block(context: CoreDataManager.managedObjectContext)
 			sharedInstance.saveContext()
@@ -131,19 +131,19 @@ extension CoreDataManager {
 //	}
 
 
-	static func saveInBackgroundContext(inContext block:(context: NSManagedObjectContext) -> Void, compleated: () -> Void) {
+	public static func saveInBackgroundContext(inContext block:(context: NSManagedObjectContext) -> Void, compleated: () -> Void) {
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
 
     func registerBackgroundTask() {
       backgroundTask = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler {
-        print("Killing bgtask \(backgroundTask)")
+//        print("Killing bgtask \(backgroundTask)")
         endBackgroundTask()
       }
-      print("Register bgtask \(backgroundTask)")
+//      print("Register bgtask \(backgroundTask)")
     }
 
     func endBackgroundTask() {
-      print("Background task ended.")
+//      print("Background task ended.")
       UIApplication.sharedApplication().endBackgroundTask(backgroundTask)
       backgroundTask = UIBackgroundTaskInvalid
     }
@@ -165,16 +165,17 @@ extension CoreDataManager {
 }
 
 
-extension NSManagedObject {
+public extension NSManagedObject {
 
-	class var entityName: String {
+
+  class var entityName: String {
 		get {
 			return NSStringFromClass(self).componentsSeparatedByString(".").last!
 		}
 	}
 
 
-	class func removeAllAndWait(inContext: NSManagedObjectContext) {
+	public class func removeAllAndWait(inContext: NSManagedObjectContext) {
 		if let entities = (try? inContext.executeFetchRequest(NSFetchRequest(entityName: entityName))) as? [NSManagedObject] {
 			entities.forEach(inContext.deleteObject)
 		}
@@ -182,7 +183,7 @@ extension NSManagedObject {
 	}
 
 
-  class func removeAll(whenDone:(() -> Void)? = .None) {
+  public class func removeAll(whenDone:(() -> Void)? = .None) {
     CoreDataManager.saveInBackgroundContext(
       inContext: { context in
         if let entities = (try? context.executeFetchRequest(NSFetchRequest(entityName: entityName))) as? [NSManagedObject] {
@@ -197,7 +198,7 @@ extension NSManagedObject {
   }
 
 
-	class func createEntity(inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext) -> Self {
+	public static func createEntity(inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext) -> Self {
 		return createEntityHelper(inContext)
 	}
 
@@ -206,7 +207,7 @@ extension NSManagedObject {
 	}
 
 
-	class func findOrCreate<T: NSManagedObject>(
+	public class func findOrCreate<T: NSManagedObject>(
 		whereProperty whereProperty: String,
 		hasValue: CVarArgType,
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext,
@@ -237,7 +238,7 @@ extension NSManagedObject {
 	}
 
 
-	class func countEntities(
+	public class func countEntities(
 		predicate: NSPredicate? = .None,
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
 		) -> Int {
@@ -249,7 +250,7 @@ extension NSManagedObject {
 	}
 
 
-	class func findWhere<T: AnyObject>(
+	public class func findWhere<T: NSManagedObject>(
 		predicate: NSPredicate? = .None,
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
 		) -> [T] {
@@ -261,7 +262,7 @@ extension NSManagedObject {
 	}
 
 
-  class func findWhere<T: AnyObject>(
+  public class func findWhere<T: NSManagedObject>(
     predicate: String,
     inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
     ) -> [T] {
@@ -273,12 +274,12 @@ extension NSManagedObject {
   }
 
 
-	class func all<T: AnyObject>(inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext) -> [T] {
+	public class func all<T: NSManagedObject>(inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext) -> [T] {
 		return findWhere(inContext: inContext)
 	}
 
 
-	class func fetchedResultsController (
+	public class func fetchedResultsController (
 		predicate: NSPredicate? = .None,
 		orderBy: [NSSortDescriptor],
 		sectionNameKeyPath: String? = .None,
