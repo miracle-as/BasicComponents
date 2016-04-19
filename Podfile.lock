@@ -4,9 +4,9 @@ PODS:
   - Whisper (2.1)
 
 DEPENDENCIES:
-  - DynamicColor (~> 2)
-  - Sugar (~> 1)
-  - Whisper
+  - DynamicColor (~> 2.0)
+  - Sugar (~> 1.0)
+  - Whisper (~> 2.0)
 
 SPEC CHECKSUMS:
   DynamicColor: 2f3fd61053684667bad9f03045dcf9a2a5a007ea
