@@ -13,6 +13,7 @@
 		520BF0641CC63FBF008D2A6A /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF0631CC63FBF008D2A6A /* String+Utils.swift */; };
 		520BF06C1CC65BD9008D2A6A /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF06B1CC65BD9008D2A6A /* UIViewController+Alert.swift */; };
 		52B2DAE61CC4CB180069BAA2 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B2DAE51CC4CB180069BAA2 /* CoreDataManager.swift */; };
+		52D9D6271CCA835200743FB3 /* VideoInBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D9D6261CCA835200743FB3 /* VideoInBackgroundView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		52B2DADA1CC4C9360069BAA2 /* BasicComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BasicComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52B2DADF1CC4C9360069BAA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52B2DAE51CC4CB180069BAA2 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		52D9D6261CCA835200743FB3 /* VideoInBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoInBackgroundView.swift; sourceTree = "<group>"; };
 		9B4B5718AC1A94E673AFBF72 /* Pods_BasicComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BasicComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -61,6 +63,7 @@
 		52B2DADC1CC4C9360069BAA2 /* BasicComponents */ = {
 			isa = PBXGroup;
 			children = (
+				52D9D6261CCA835200743FB3 /* VideoInBackgroundView.swift */,
 				520BF0631CC63FBF008D2A6A /* String+Utils.swift */,
 				520BF0601CC63F20008D2A6A /* UIView+Circular.swift */,
 				520BF06B1CC65BD9008D2A6A /* UIViewController+Alert.swift */,
@@ -219,6 +222,7 @@
 				520BF06C1CC65BD9008D2A6A /* UIViewController+Alert.swift in Sources */,
 				520BF0641CC63FBF008D2A6A /* String+Utils.swift in Sources */,
 				520BF05F1CC63188008D2A6A /* CoreDataTableViewController.swift in Sources */,
+				52D9D6271CCA835200743FB3 /* VideoInBackgroundView.swift in Sources */,
 				52B2DAE61CC4CB180069BAA2 /* CoreDataManager.swift in Sources */,
 				520BF0611CC63F20008D2A6A /* UIView+Circular.swift in Sources */,
 			);

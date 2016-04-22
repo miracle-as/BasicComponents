@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'BasicComponents'
-  s.version      = '0.2.1'
+  s.version      = '0.2.2'
   s.summary      = 'BasicComponents includes Miracle A/S commonly used base components for iOS projects.'
 
   s.homepage     = 'https://bitbucket.org/loevdahl/basiccomponents/overview'
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 
   s.framework    = 'UIKit'
   s.frameworks   = 'Foundation'
-  s.frameworks   = 'Security'
+  s.frameworks   = 'AVFoundation'
 
   s.requires_arc = true
 
