@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-//import AVKit
 import AVFoundation
 
 public class VideoInBackgroundView: UIView {
@@ -16,18 +15,22 @@ public class VideoInBackgroundView: UIView {
   private var playerDidPlayToTheEndNotificationToken: AnyObject?
 
   lazy var player: AVPlayer = {
-    let path = NSBundle.mainBundle().pathForResource(self.videoName, ofType: "mp4")!
-    let item = AVPlayerItem(URL: NSURL(fileURLWithPath: path))
+    if let path = NSBundle.mainBundle().pathForResource(self.videoName, ofType: "mp4") {
 
-    let player = AVPlayer(playerItem: item)
-    player.actionAtItemEnd = .None
+      let item = AVPlayerItem(URL: NSURL(fileURLWithPath: path))
 
-    self.playerDidPlayToTheEndNotificationToken = NSNotificationCenter.defaultCenter()
-      .addObserverForName(AVPlayerItemDidPlayToEndTimeNotification, object: item, queue: .None) { _ in
-      player.seekToTime(kCMTimeZero)
+      let player = AVPlayer(playerItem: item)
+      player.actionAtItemEnd = .None
+
+      self.playerDidPlayToTheEndNotificationToken = NSNotificationCenter.defaultCenter()
+        .addObserverForName(AVPlayerItemDidPlayToEndTimeNotification, object: item, queue: .None) { _ in
+          player.seekToTime(kCMTimeZero)
+      }
+
+      return player
+    } else {
+      return AVPlayer()
     }
-
-    return player
   }()
 
   lazy var playerLayer: AVPlayerLayer = AVPlayerLayer(player: self.player)
@@ -63,5 +66,5 @@ public class VideoInBackgroundView: UIView {
       NSNotificationCenter.defaultCenter().removeObserver(playerDidPlayToTheEndNotificationToken)
     }
   }
-
+  
 }
