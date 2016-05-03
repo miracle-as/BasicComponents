@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'BasicComponents'
-  s.version      = '0.2.2'
+  s.version      = '0.2.3'
   s.summary      = 'BasicComponents includes Miracle A/S commonly used base components for iOS projects.'
 
   s.homepage     = 'https://bitbucket.org/loevdahl/basiccomponents/overview'

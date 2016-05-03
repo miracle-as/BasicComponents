@@ -7,6 +7,7 @@ Sugar is a sweetener for your Cocoa implementations.
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/cocoapods/l/Sugar.svg?style=flat)](http://cocoadocs.org/docsets/Sugar)
 [![Platform](https://img.shields.io/cocoapods/p/Sugar.svg?style=flat)](http://cocoadocs.org/docsets/Sugar)
+![Swift](https://img.shields.io/badge/%20in-swift%202.2-orange.svg)
 
 ## Table of Contents
 
@@ -27,6 +28,7 @@ Sugar is a sweetener for your Cocoa implementations.
   * [Grand Central Dispatch](#grand-central-dispatch)
   * [Localization](#localization)
   * [Operators](#operators)
+  * [Range](#range)
   * [Regex](#regex)
   * [Shared Extensions](#shared-extensions)
     * [Queueable](#queueable)
@@ -177,7 +179,7 @@ And `.Custom()` for your own dispatch queues.
 
 ```swift
 let string = localizedString("My Profile")
-let formattedString = localizedString(key: "%d numbers", arguments: 10) 
+let formattedString = localizedString(key: "%d numbers", arguments: 10)
 ```
 
 Swift access (pun intended) to `NSLocalizedString`, you will get more valid auto completion
@@ -192,6 +194,15 @@ url ?= NSURL(string: "\\/http")
 ```
 
 The `?=` only assigns values if the right is not nil.
+
+### Range
+
+```swift
+let acceptable = 200..<300
+if acceptable.contains(response.statusCode) {
+  // Status code is between 200 and 299.
+}
+```
 
 ### Regex
 
