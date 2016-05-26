@@ -12,6 +12,7 @@
 		520BF0611CC63F20008D2A6A /* UIView+Circular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF0601CC63F20008D2A6A /* UIView+Circular.swift */; };
 		520BF0641CC63FBF008D2A6A /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF0631CC63FBF008D2A6A /* String+Utils.swift */; };
 		520BF06C1CC65BD9008D2A6A /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BF06B1CC65BD9008D2A6A /* UIViewController+Alert.swift */; };
+		523C31231CF5DC6A005BDD71 /* VerticalGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523C31221CF5DC6A005BDD71 /* VerticalGradientView.swift */; };
 		52B2DAE61CC4CB180069BAA2 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B2DAE51CC4CB180069BAA2 /* CoreDataManager.swift */; };
 		52D9D6271CCA835200743FB3 /* VideoInBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D9D6261CCA835200743FB3 /* VideoInBackgroundView.swift */; };
 /* End PBXBuildFile section */
@@ -23,6 +24,7 @@
 		520BF0601CC63F20008D2A6A /* UIView+Circular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Circular.swift"; sourceTree = "<group>"; };
 		520BF0631CC63FBF008D2A6A /* String+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Utils.swift"; sourceTree = "<group>"; };
 		520BF06B1CC65BD9008D2A6A /* UIViewController+Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
+		523C31221CF5DC6A005BDD71 /* VerticalGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalGradientView.swift; sourceTree = "<group>"; };
 		52B2DADA1CC4C9360069BAA2 /* BasicComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BasicComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52B2DADF1CC4C9360069BAA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52B2DAE51CC4CB180069BAA2 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				520BF0631CC63FBF008D2A6A /* String+Utils.swift */,
 				520BF0601CC63F20008D2A6A /* UIView+Circular.swift */,
 				520BF06B1CC65BD9008D2A6A /* UIViewController+Alert.swift */,
+				523C31221CF5DC6A005BDD71 /* VerticalGradientView.swift */,
 				52B2DAE81CC4CB350069BAA2 /* Models */,
 				52B2DAE71CC4CB2B0069BAA2 /* Supporting Files */,
 			);
@@ -223,6 +226,7 @@
 				520BF0641CC63FBF008D2A6A /* String+Utils.swift in Sources */,
 				520BF05F1CC63188008D2A6A /* CoreDataTableViewController.swift in Sources */,
 				52D9D6271CCA835200743FB3 /* VideoInBackgroundView.swift in Sources */,
+				523C31231CF5DC6A005BDD71 /* VerticalGradientView.swift in Sources */,
 				52B2DAE61CC4CB180069BAA2 /* CoreDataManager.swift in Sources */,
 				520BF0611CC63F20008D2A6A /* UIView+Circular.swift in Sources */,
 			);

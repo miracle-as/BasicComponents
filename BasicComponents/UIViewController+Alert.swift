@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import Whisper
-import DynamicColor
 
 
 public func statusBarNotify(message: String, color: UIColor = .clearColor()) {
@@ -19,55 +18,53 @@ public func statusBarNotify(message: String, color: UIColor = .clearColor()) {
 
 public extension UIViewController {
 
-	public func askUserFor(title: String, message: String, whenAsked: (ok: Bool) -> Void) {
-		let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+  public func askUserFor(title: String, message: String, whenAsked: (ok: Bool) -> Void) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
 
-		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in
-			whenAsked(ok: false)
-		}
-		alertController.addAction(cancelAction)
+    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in
+      whenAsked(ok: false)
+    }
+    alertController.addAction(cancelAction)
 
-		let OKAction = UIAlertAction(title: "OK", style: .Default) { _ in
-			whenAsked(ok: true)
-		}
-		alertController.addAction(OKAction)
+    let OKAction = UIAlertAction(title: "OK", style: .Default) { _ in
+      whenAsked(ok: true)
+    }
+    alertController.addAction(OKAction)
 
-		self.presentViewController(alertController, animated: true) {
-		}
-	}
-
-
-	public func alert(title: String = "Error", message: String, whenAcknowledge: () -> Void) {
-		let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-
-		let OKAction = UIAlertAction(title: "OK", style: .Default) { _ in
-			whenAcknowledge()
-		}
-		alertController.addAction(OKAction)
-
-		self.presentViewController(alertController, animated: true) {
-		}
-	}
+    self.presentViewController(alertController, animated: true) {
+    }
+  }
 
 
-	public func close(animate animated: Bool) {
-		if let navigationController = navigationController {
-			navigationController.popViewControllerAnimated(animated)
-		} else {
-			dismissViewControllerAnimated(animated, completion: .None)
-		}
-	}
+  public func alert(title: String = "Error", message: String, whenAcknowledge: () -> Void) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
 
-}
+    let OKAction = UIAlertAction(title: "OK", style: .Default) { _ in
+      whenAcknowledge()
+    }
+    alertController.addAction(OKAction)
+
+    self.presentViewController(alertController, animated: true) {
+    }
+  }
 
 
-extension UIViewController {
+  public func close(animate animated: Bool) {
+    if let navigationController = navigationController {
+      navigationController.popViewControllerAnimated(animated)
+    } else {
+      dismissViewControllerAnimated(animated, completion: .None)
+    }
+  }
+
+
   public var isVisible: Bool {
     if isViewLoaded() {
       return view.window != nil
     }
     return false
   }
+
 
   public var contentViewController: UIViewController {
     if let vc = self as? UINavigationController {
@@ -76,6 +73,7 @@ extension UIViewController {
       return self
     }
   }
+
 
   public var isTopViewController: Bool {
     if self.navigationController != nil {
@@ -87,6 +85,7 @@ extension UIViewController {
     }
   }
 
+
   public var isRunningInFullScreen: Bool {
     if let
       delegate = UIApplication.sharedApplication().delegate,
@@ -95,5 +94,28 @@ extension UIViewController {
       return CGRectEqualToRect(win.frame, win.screen.bounds)
     }
     return true
+  }
+
+
+  class var className: String {
+    get {
+      return NSStringFromClass(self).componentsSeparatedByString(".").last!
+    }
+  }
+
+
+  private class func instanceFromMainStoryboardHelper<T>() -> T? {
+    if let
+      appDelegate = UIApplication.sharedApplication().delegate,
+      rvc = appDelegate.window??.rootViewController,
+      controller = rvc.storyboard?.instantiateViewControllerWithIdentifier(className) as? T {
+      return controller
+    }
+    return .None
+  }
+
+
+  public class func instanceFromMainStoryboard() -> Self? {
+    return instanceFromMainStoryboardHelper()
   }
 }
