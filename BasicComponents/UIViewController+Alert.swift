@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Whisper
-
+import DynamicColor
 
 public func statusBarNotify(message: String, color: UIColor = .clearColor()) {
   Whistle(Murmur(title: message, duration: 2, backgroundColor: color, titleColor: color.isLightColor() ? .blackColor() : .whiteColor()))
