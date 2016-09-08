@@ -10,51 +10,63 @@ import Foundation
 import UIKit
 import CoreData
 
-public protocol CoreDataTableViewController: UITableViewDataSource, NSFetchedResultsControllerDelegate {
-  var fetchedResultsController: NSFetchedResultsController { get }
-  weak var tableView: UITableView! { get }
-}
 
-// MARK:- UITableViewDataSource
-extension CoreDataTableViewController {
-  private var _fetchedResultsController: NSFetchedResultsController {
-    if fetchedResultsController.fetchedObjects == nil {
-      do {
-        try fetchedResultsController.performFetch()
-      } catch {
-        let fetchError = error as NSError
-        print("\(fetchError), \(fetchError.userInfo)")
-      }
+public class CoreDataFetchControllerDataSource: NSObject {
+
+  weak private var tableView: UITableView!
+  private let fetchController: NSFetchedResultsController
+  private let cellGenerator: (tableView: UITableView, item: AnyObject, indexPath: NSIndexPath) -> UITableViewCell?
+
+  public init(fetchController: NSFetchedResultsController, forTableView: UITableView, cellForRow: (tableView: UITableView, item: AnyObject, indexPath: NSIndexPath) -> UITableViewCell?) {
+
+    tableView = forTableView
+    self.fetchController = fetchController
+    cellGenerator = cellForRow
+
+    super.init()
+
+    tableView.dataSource = self
+    fetchController.delegate = self
+
+    do {
+      try fetchController.performFetch()
+    } catch {
+      let fetchError = error as NSError
+      print("\(fetchError), \(fetchError.userInfo)")
     }
-    return fetchedResultsController
-  }
-
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return _fetchedResultsController.sections?.count ?? 0
-  }
-
-
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return _fetchedResultsController.sections?[section].numberOfObjects ?? 0
   }
 }
 
-// MARK:- NSFetchedResultsControllerDelegate
-extension CoreDataTableViewController {
-  func controllerWillChangeContent(controller: NSFetchedResultsController) {
+
+extension CoreDataFetchControllerDataSource: UITableViewDataSource {
+
+  public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return fetchController.sections?[section].numberOfObjects ?? 0
+  }
+
+
+  public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let item = fetchController.objectAtIndexPath(indexPath)
+    return cellGenerator(tableView: tableView, item: item, indexPath: indexPath) ?? UITableViewCell()
+  }
+}
+
+
+extension CoreDataFetchControllerDataSource: NSFetchedResultsControllerDelegate {
+  public func controllerWillChangeContent(controller: NSFetchedResultsController) {
     tableView.beginUpdates()
   }
 
 
-  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+  public func controllerDidChangeContent(controller: NSFetchedResultsController) {
     tableView.endUpdates()
   }
 
 
-  func controller(controller: NSFetchedResultsController,
-                  didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-                                   atIndex sectionIndex: Int,
-                                           forChangeType type: NSFetchedResultsChangeType) {
+  public func controller(controller: NSFetchedResultsController,
+                         didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
+                                          atIndex sectionIndex: Int,
+                                                  forChangeType type: NSFetchedResultsChangeType) {
 
     switch type {
     case .Insert:
@@ -66,11 +78,11 @@ extension CoreDataTableViewController {
   }
 
 
-  func controller(controller: NSFetchedResultsController,
-                  didChangeObject anObject: AnyObject,
-                                  atIndexPath indexPath: NSIndexPath?,
-                                              forChangeType type: NSFetchedResultsChangeType,
-                                                            newIndexPath: NSIndexPath?) {
+  public func controller(controller: NSFetchedResultsController,
+                         didChangeObject anObject: AnyObject,
+                                         atIndexPath indexPath: NSIndexPath?,
+                                                     forChangeType type: NSFetchedResultsChangeType,
+                                                                   newIndexPath: NSIndexPath?) {
 
     switch (type, indexPath, newIndexPath) {
     case (.Insert, _, let newIndexPath?):
@@ -86,28 +98,3 @@ extension CoreDataTableViewController {
     }
   }
 }
-
-//class CoreDataTableViewWWController: UIViewController, UITableViewDataSource, NSFetchedResultsControllerDelegate {
-//  lazy var fetchedResultsController: NSFetchedResultsController = self.initFetchedResultsController()
-//
-//
-//  func initFetchedResultsController() -> NSFetchedResultsController {
-//    return NSFetchedResultsController()
-//  }
-//
-//  @IBOutlet weak var tableView: UITableView!
-//
-//
-//  override func viewDidLoad() {
-//    super.viewDidLoad()
-//    do {
-//      try fetchedResultsController.performFetch()
-//    } catch {
-//      let fetchError = error as NSError
-//      print("\(fetchError), \(fetchError.userInfo)")
-//    }
-//  }
-//
-//
-//
-//}

@@ -21,7 +21,7 @@ public extension UIViewController {
   public func askUserFor(title: String, message: String, whenAsked: (ok: Bool) -> Void) {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
 
-    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in
+    let cancelAction = UIAlertAction(title: "Annuller", style: .Cancel) { _ in
       whenAsked(ok: false)
     }
     alertController.addAction(cancelAction)

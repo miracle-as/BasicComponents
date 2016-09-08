@@ -109,6 +109,20 @@ public class CoreDataManager {
 }
 
 
+public extension NSManagedObjectContext {
+  func saveIfChanged() {
+    if hasChanges {
+      do {
+        try save()
+      } catch {
+        let nserror = error as NSError
+        print("Unable to save data. Error \(nserror)") //FIXME this is properly a little rough
+      }
+    }
+  }
+}
+
+
 public extension CoreDataManager {
 
 	public static func saveInMainContext(@noescape block:(context: NSManagedObjectContext) -> Void) {
@@ -292,4 +306,14 @@ public extension NSManagedObject {
 				cacheName: .None)
 	}
 
+}
+
+
+public extension String {
+  public var ascending:  NSSortDescriptor {
+    return NSSortDescriptor(key: self, ascending: true)
+  }
+  public var descending:  NSSortDescriptor {
+    return NSSortDescriptor(key: self, ascending: false)
+  }
 }

@@ -31,6 +31,7 @@ public class VerticalGradientView: UIView {
 
   func setColors() {
     gradientLayer.colors = [topColor ?? .whiteColor(), bottomColor ?? .blackColor()].map { $0.CGColor }
+    backgroundColor = .clearColor()
   }
 
   @IBInspectable
