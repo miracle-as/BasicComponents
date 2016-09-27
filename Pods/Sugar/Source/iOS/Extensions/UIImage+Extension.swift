@@ -7,7 +7,7 @@ public extension UIImage {
     UIGraphicsBeginImageContextWithOptions(size, true, 0)
     color.setFill()
     UIRectFill(rect)
-    let image = UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+    let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     self.init(CGImage: image.CGImage!)

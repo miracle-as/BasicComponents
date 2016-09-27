@@ -1,10 +1,8 @@
 PODS:
-  - DynamicColor (2.4.0)
   - Sugar (1.2.0)
   - Whisper (3.1.1)
 
 DEPENDENCIES:
-  - DynamicColor (~> 2.0)
   - Sugar (from `https://github.com/hyperoslo/Sugar`, branch `swift-2.3`)
   - Whisper (~> 3.0)
 
@@ -19,10 +17,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/hyperoslo/Sugar
 
 SPEC CHECKSUMS:
-  DynamicColor: 2f3fd61053684667bad9f03045dcf9a2a5a007ea
   Sugar: 556b623f0f8846cf08de7302701892f11d567419
   Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
 
-PODFILE CHECKSUM: d46671df40089f73acc5962bdf58801349128c9c
+PODFILE CHECKSUM: d1fb69b781ec364391d8c66c7b1634f924a97ce2
 
 COCOAPODS: 1.1.0.rc.2

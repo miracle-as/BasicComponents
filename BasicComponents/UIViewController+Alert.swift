@@ -9,10 +9,23 @@
 import Foundation
 import UIKit
 import Whisper
-import DynamicColor
+
 
 public func statusBarNotify(message: String, color: UIColor = .clearColor()) {
-  Whistle(Murmur(title: message, duration: 2, backgroundColor: color, titleColor: color.isLightColor() ? .blackColor() : .whiteColor()))
+  func isLightColor() -> Bool {
+    var r: CGFloat = 0
+    var g: CGFloat = 0
+    var b: CGFloat = 0
+    var a: CGFloat = 0
+
+    color.getRed(&r, green: &g, blue: &b, alpha: &a)
+
+    let brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000
+    return brightness >= 0.5
+  }
+
+  let murmur = Murmur(title: message, backgroundColor: color, titleColor: isLightColor() ? .blackColor() : .whiteColor())
+  show(whistle: murmur, action: .Show(2))
 }
 
 
