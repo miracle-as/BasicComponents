@@ -8,7 +8,6 @@
 
 import UIKit
 
-@IBDesignable
 public extension UIView {
 	@IBInspectable public var cornerRadius: CGFloat {
 		get {

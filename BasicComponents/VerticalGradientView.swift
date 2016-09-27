@@ -8,7 +8,6 @@
 
 import UIKit
 
-@IBDesignable
 public class VerticalGradientView: UIView {
 
   var gradientLayer: CAGradientLayer {

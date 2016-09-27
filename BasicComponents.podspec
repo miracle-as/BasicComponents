@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.author             = { 'Lasse Løvdahl' => 'llo@miracle.dk' }
 # s.social_media_url   = 'http://twitter.com/Lasse Løvdahl'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '8.0'
 
   s.source       = { :git => 'https://github.com/miracle-as/BasicComponents.git', :tag => s.version }
 
