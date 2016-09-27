@@ -27,7 +27,7 @@ public class CoreDataManager {
 			NSManagedObjectContextObjectsDidChangeNotification,
 			object: CoreDataManager.managedObjectContext,
 			queue: NSOperationQueue.mainQueue()) { note in
-				if let updated = note.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> where updated.count > 0 {
+				if let updated = note.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>  where updated.count > 0 {
 					block(.Updated(Array(updated)))
 				}
 
@@ -65,7 +65,9 @@ public class CoreDataManager {
 			print("CoreData ERROR, There was an error creating or loading the application's saved data.")
 
 			do {
-				try NSFileManager.defaultManager().removeItemAtURL(url!)
+        if let url = url {
+          try NSFileManager.defaultManager().removeItemAtURL(url)
+        }
 				try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: storeOptions)
 			} catch {
 				fatalError("CoreData ERROR, There was an error creating or loading the application's saved data.")
@@ -255,7 +257,7 @@ public extension NSManagedObject {
 			let fetchRequest = NSFetchRequest(entityName: entityName)
 			fetchRequest.predicate = predicate
 
-			return (try? inContext.countForFetchRequest(fetchRequest)) ?? -1
+    return (try? inContext.countForFetchRequest(fetchRequest)) ?? 0
 	}
 
 

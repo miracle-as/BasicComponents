@@ -1,6 +1,6 @@
 PODS:
   - DynamicColor (2.4.0)
-  - Sugar (1.1.1)
+  - Sugar (1.2.0)
   - Whisper (2.1)
 
 DEPENDENCIES:
@@ -10,7 +10,9 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   DynamicColor: 2f3fd61053684667bad9f03045dcf9a2a5a007ea
-  Sugar: bed396c924fd089feee7c780778cca2a124f580c
+  Sugar: 556b623f0f8846cf08de7302701892f11d567419
   Whisper: 18b574de21a089c0d664b115f26e0d9ccbbadbab
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 82fc94b88e4078f2e6b33bd427f67b82284c4b3b
+
+COCOAPODS: 1.1.0.rc.2
