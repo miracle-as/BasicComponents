@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
 
-  s.dependency 'Sugar',        :git => 'https://github.com/pherret/Sugar', :branch => 'swift2.3'
+  s.dependency 'Sugar', '~> 1.0', :git => 'https://github.com/pherret/Sugar', :branch => 'swift2.3'
   s.dependency 'DynamicColor', '~> 2.0'
   s.dependency 'Whisper', '~> 3.0'
 
