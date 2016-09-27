@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'BasicComponents'
-  s.version      = '2.3.0'
+  s.version      = '2.3.1'
   s.summary      = 'BasicComponents includes Miracle A/S commonly used base components for iOS projects.'
 
   s.homepage     = 'https://github.com/miracle-as/BasicComponents'
@@ -10,9 +10,9 @@ Pod::Spec.new do |s|
   s.author             = { 'Lasse Løvdahl' => 'llo@miracle.dk' }
 # s.social_media_url   = 'http://twitter.com/Lasse Løvdahl'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
-  s.source       = { :git => 'https://github.com/miracle-as/BasicComponents', :tag => s.version }
+  s.source       = { :git => 'https://github.com/miracle-as/BasicComponents.git', :tag => s.version }
 
   s.source_files = 'BasicComponents/*.swift'
 
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
 
-  s.dependency 'Sugar', '~> 1.0', :git => 'https://github.com/pherret/Sugar', :branch => 'swift2.3'
+  s.dependency 'Sugar', '~> 1.0'
   s.dependency 'DynamicColor', '~> 2.0'
   s.dependency 'Whisper', '~> 3.0'
 
