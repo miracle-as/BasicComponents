@@ -209,6 +209,24 @@ public extension NSManagedObject {
   }
 
 
+  public func saveNow(completed: (()->())? = .None) {
+    if let context = managedObjectContext {
+      if context.concurrencyType == .MainQueueConcurrencyType {
+        context.saveIfChanged()
+        completed?()
+      } else {
+        CoreDataManager.saveInBackgroundContext(
+          inContext: { context in
+            context.saveIfChanged()
+          },
+          compleated: {
+            completed?()
+          }
+        )
+      }
+    }
+  }
+
 	public static func createEntity(inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext) -> Self {
 		return createEntityHelper(inContext)
 	}
