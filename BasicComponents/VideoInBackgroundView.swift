@@ -10,21 +10,21 @@ import Foundation
 import UIKit
 import AVFoundation
 
-public class VideoInBackgroundView: UIView {
+open class VideoInBackgroundView: UIView {
 
-  private var playerDidPlayToTheEndNotificationToken: AnyObject?
+  fileprivate var playerDidPlayToTheEndNotificationToken: AnyObject?
 
   lazy var player: AVPlayer = {
-    if let path = NSBundle.mainBundle().pathForResource(self.videoName, ofType: "mp4") {
+    if let path = Bundle.main.path(forResource: self.videoName, ofType: "mp4") {
 
-      let item = AVPlayerItem(URL: NSURL(fileURLWithPath: path))
+      let item = AVPlayerItem(url: URL(fileURLWithPath: path))
 
       let player = AVPlayer(playerItem: item)
-      player.actionAtItemEnd = .None
+      player.actionAtItemEnd = .none
 
-      self.playerDidPlayToTheEndNotificationToken = NSNotificationCenter.defaultCenter()
-        .addObserverForName(AVPlayerItemDidPlayToEndTimeNotification, object: item, queue: .None) { _ in
-          player.seekToTime(kCMTimeZero)
+      self.playerDidPlayToTheEndNotificationToken = NotificationCenter.default
+        .addObserver(forName: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: item, queue: .none) { _ in
+          player.seek(to: kCMTimeZero)
       }
 
       return player
@@ -36,15 +36,15 @@ public class VideoInBackgroundView: UIView {
   lazy var playerLayer: AVPlayerLayer = AVPlayerLayer(player: self.player)
 
   @IBInspectable
-  public var videoName: String! {
+  open var videoName: String! {
     willSet {
-      if videoName != .None {
+      if videoName != .none {
         fatalError("Video in background player cannot be changed")
       }
     }
 
     didSet {
-      if videoName != .None {
+      if videoName != .none {
         layer.addSublayer(playerLayer)
         playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
 
@@ -54,7 +54,7 @@ public class VideoInBackgroundView: UIView {
   }
 
 
-  override public func layoutSubviews() {
+  override open func layoutSubviews() {
     super.layoutSubviews()
 
     playerLayer.frame = bounds
@@ -63,7 +63,7 @@ public class VideoInBackgroundView: UIView {
 
   deinit {
     if let playerDidPlayToTheEndNotificationToken = playerDidPlayToTheEndNotificationToken {
-      NSNotificationCenter.defaultCenter().removeObserver(playerDidPlayToTheEndNotificationToken)
+      NotificationCenter.default.removeObserver(playerDidPlayToTheEndNotificationToken)
     }
   }
   

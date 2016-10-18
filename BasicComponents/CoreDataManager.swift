@@ -10,51 +10,51 @@ import Foundation
 import CoreData
 import Sugar
 
-public class CoreDataManager {
+open class CoreDataManager {
 
-	public static let sharedInstance = CoreDataManager()
+	open static let sharedInstance = CoreDataManager()
 
-	private init() {}
+	fileprivate init() {}
 
 	public enum DataChanges {
-		case Deleted([NSManagedObject])
-		case Updated([NSManagedObject])
-		case Created([NSManagedObject])
+		case deleted([NSManagedObject])
+		case updated([NSManagedObject])
+		case created([NSManagedObject])
 	}
 
-	public class func onDataChanges(block: DataChanges -> Void) -> NSObjectProtocol {
-		return NSNotificationCenter.defaultCenter().addObserverForName(
-			NSManagedObjectContextObjectsDidChangeNotification,
+	open class func onDataChanges(_ block: @escaping (DataChanges) -> Void) -> NSObjectProtocol {
+		return NotificationCenter.default.addObserver(
+			forName: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
 			object: CoreDataManager.managedObjectContext,
-			queue: NSOperationQueue.mainQueue()) { note in
-				if let updated = note.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>  where updated.count > 0 {
-					block(.Updated(Array(updated)))
+			queue: OperationQueue.main) { note in
+				if let updated = (note as NSNotification).userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>  , updated.count > 0 {
+					block(.updated(Array(updated)))
 				}
 
-				if let deleted = note.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject> where deleted.count > 0 {
-					block(.Deleted(Array(deleted)))
+				if let deleted = (note as NSNotification).userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject> , deleted.count > 0 {
+					block(.deleted(Array(deleted)))
 				}
 
-				if let inserted = note.userInfo?[NSInsertedObjectsKey] as? Set<NSManagedObject> where inserted.count > 0 {
-					block(.Created(Array(inserted)))
+				if let inserted = (note as NSNotification).userInfo?[NSInsertedObjectsKey] as? Set<NSManagedObject> , inserted.count > 0 {
+					block(.created(Array(inserted)))
 				}
 		}
 	}
 
 
-	private lazy var applicationDocumentsDirectory: NSURL = {
-		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+	fileprivate lazy var applicationDocumentsDirectory: URL = {
+		let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 		return urls[urls.count-1]
 	}()
 
 
-  private lazy var managedObjectModel: NSManagedObjectModel = {
-		let modelURL = NSBundle.mainBundle().URLForResource(Application.executable, withExtension: "momd")!
-		return NSManagedObjectModel(contentsOfURL: modelURL)!
+  fileprivate lazy var managedObjectModel: NSManagedObjectModel = {
+		let modelURL = Bundle.main.url(forResource: Application.executable, withExtension: "momd")!
+		return NSManagedObjectModel(contentsOf: modelURL)!
 	}()
 
 
-	private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+	fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
 		var coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
 		let storeOptions  = [NSMigratePersistentStoresAutomaticallyOption : true]
 		let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("\(Application.executable).sqlite")
@@ -66,7 +66,7 @@ public class CoreDataManager {
 
 			do {
         if let url = url {
-          try NSFileManager.defaultManager().removeItemAtURL(url)
+          try FileManager.defaultManager().removeItemAtURL(url)
         }
 				try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: storeOptions)
 			} catch {
@@ -78,22 +78,22 @@ public class CoreDataManager {
 	}()
 
 
-	private lazy var managedObjectContext: NSManagedObjectContext = {
-		let managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+	fileprivate lazy var managedObjectContext: NSManagedObjectContext = {
+		let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
 		return managedObjectContext
 	}()
 
 
-	private lazy var childObjectContext: NSManagedObjectContext = {
-		let childObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-		childObjectContext.parentContext = self.managedObjectContext
+	fileprivate lazy var childObjectContext: NSManagedObjectContext = {
+		let childObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+		childObjectContext.parent = self.managedObjectContext
 //		childObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 		return childObjectContext
 	}()
 
 
-	private func saveContext (context: NSManagedObjectContext = CoreDataManager.managedObjectContext) {
+	fileprivate func saveContext (_ context: NSManagedObjectContext = CoreDataManager.managedObjectContext) {
 //		print("saving: \(context) hasChanges: \(context.hasChanges)")
 		if context.hasChanges {
 			do {
@@ -105,7 +105,7 @@ public class CoreDataManager {
 		}
 	}
 
-	public class var managedObjectContext: NSManagedObjectContext {
+	open class var managedObjectContext: NSManagedObjectContext {
 		return sharedInstance.managedObjectContext
 	}
 }
@@ -127,14 +127,14 @@ public extension NSManagedObjectContext {
 
 public extension CoreDataManager {
 
-	public static func saveInMainContext(@noescape block:(context: NSManagedObjectContext) -> Void) {
-		saveInMainContext(inContext: block, compleated: .None)
+	public static func saveInMainContext(_ block: (_ context: NSManagedObjectContext) -> Void) {
+		saveInMainContext(inContext: block, compleated: .none)
 	}
 
 
 	public static func saveInMainContext(
-		@noescape inContext block:(context: NSManagedObjectContext) -> Void, compleated: (() -> Void)?) {
-			block(context: CoreDataManager.managedObjectContext)
+		inContext block: (_ context: NSManagedObjectContext) -> Void, compleated: (() -> Void)?) {
+			block(CoreDataManager.managedObjectContext)
 			sharedInstance.saveContext()
 			if let compleated = compleated {
 				compleated()
@@ -142,11 +142,11 @@ public extension CoreDataManager {
 	}
 
 
-	public static func saveInBackgroundContext(inContext block:(context: NSManagedObjectContext) -> Void, compleated: () -> Void) {
+	public static func saveInBackgroundContext(inContext block:@escaping (_ context: NSManagedObjectContext) -> Void, compleated: @escaping () -> Void) {
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
 
     func registerBackgroundTask() {
-      backgroundTask = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler {
+      backgroundTask = UIApplication.shared.beginBackgroundTask {
 //        print("Killing bgtask \(backgroundTask)")
         endBackgroundTask()
       }
@@ -155,14 +155,14 @@ public extension CoreDataManager {
 
     func endBackgroundTask() {
 //      print("Background task ended.")
-      UIApplication.sharedApplication().endBackgroundTask(backgroundTask)
+      UIApplication.shared.endBackgroundTask(backgroundTask)
       backgroundTask = UIBackgroundTaskInvalid
     }
 
 		let context = sharedInstance.childObjectContext
-		context.performBlock {
+		context.perform {
       registerBackgroundTask()
-			block(context: context)
+			block(context)
 			sharedInstance.saveContext(context)
 			context.reset()
 
@@ -181,24 +181,24 @@ public extension NSManagedObject {
 
   class var entityName: String {
 		get {
-			return NSStringFromClass(self).componentsSeparatedByString(".").last!
+			return NSStringFromClass(self).components(separatedBy: ".").last!
 		}
 	}
 
 
-	public class func removeAllAndWait(inContext: NSManagedObjectContext) {
-		if let entities = (try? inContext.executeFetchRequest(NSFetchRequest(entityName: entityName))) as? [NSManagedObject] {
-			entities.forEach(inContext.deleteObject)
+	public class func removeAllAndWait(_ inContext: NSManagedObjectContext) {
+		if let entities = (try? inContext.fetch(NSFetchRequest(entityName: entityName))) as? [NSManagedObject] {
+			entities.forEach(inContext.delete(_:))
 		}
 
 	}
 
 
-  public class func removeAll(whenDone:(() -> Void)? = .None) {
+  public class func removeAll(_ whenDone:(() -> Void)? = .none) {
     CoreDataManager.saveInBackgroundContext(
       inContext: { context in
-        if let entities = (try? context.executeFetchRequest(NSFetchRequest(entityName: entityName))) as? [NSManagedObject] {
-          entities.forEach(context.deleteObject)
+        if let entities = (try? context.fetch(NSFetchRequest(entityName: entityName))) as? [NSManagedObject] {
+          entities.forEach(context.delete(_:))
         }},
       compleated: {
         if let whenDone = whenDone {
@@ -209,9 +209,9 @@ public extension NSManagedObject {
   }
 
 
-  public func saveNow(completed: (()->())? = .None) {
+  public func saveNow(_ completed: (()->())? = .none) {
     if let context = managedObjectContext {
-      if context.concurrencyType == .MainQueueConcurrencyType {
+      if context.concurrencyType == .mainQueueConcurrencyType {
         context.saveIfChanged()
         completed?()
       } else {
@@ -227,25 +227,25 @@ public extension NSManagedObject {
     }
   }
 
-	public static func createEntity(inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext) -> Self {
+	public static func createEntity(_ inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext) -> Self {
 		return createEntityHelper(inContext)
 	}
 
-	private class func createEntityHelper<T: NSManagedObject>(inContext: NSManagedObjectContext) -> T {
-		return NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: inContext) as! T // swiftlint:disable:this force_cast
+	fileprivate class func createEntityHelper<T: NSManagedObject>(_ inContext: NSManagedObjectContext) -> T {
+		return NSEntityDescription.insertNewObject(forEntityName: entityName, into: inContext) as! T // swiftlint:disable:this force_cast
 	}
 
 
 	public class func findOrCreate<T: NSManagedObject>(
-		whereProperty whereProperty: String,
-		hasValue: CVarArgType,
+		whereProperty: String,
+		hasValue: CVarArg,
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext,
-		block:((entity: T, exists: Bool) -> Void)?) -> T {
+		block:((_ entity: T, _ exists: Bool) -> Void)?) -> T {
 
 			let fetchRequest = NSFetchRequest(entityName: entityName)
 			fetchRequest.predicate = NSPredicate(format: "%K == %@", whereProperty, hasValue)
 
-			let entity = (try? inContext.executeFetchRequest(fetchRequest).first) as? T
+			let entity = (try? inContext.fetch(fetchRequest).first) as? T
 
 			if let entity = entity {
 				if let block = block {
@@ -260,7 +260,7 @@ public extension NSManagedObject {
 				}
 
 				if let block = block {
-					block(entity: entity, exists: false)
+					block(entity, false)
 				}
 				return entity
 			}
@@ -268,52 +268,52 @@ public extension NSManagedObject {
 
 
 	public class func countEntities(
-		predicate: NSPredicate? = .None,
+		_ predicate: NSPredicate? = .none,
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
 		) -> Int {
 
 			let fetchRequest = NSFetchRequest(entityName: entityName)
 			fetchRequest.predicate = predicate
 
-    return (try? inContext.countForFetchRequest(fetchRequest)) ?? 0
+    return (try? inContext.count(for: fetchRequest)) ?? 0
 	}
 
 
 	public class func findWhere<T: NSManagedObject>(
-		predicate: NSPredicate? = .None,
+		_ predicate: NSPredicate? = .none,
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
 		) -> [T] {
 
 			let fetchRequest = NSFetchRequest(entityName: entityName)
 			fetchRequest.predicate = predicate
 
-			return (try? inContext.executeFetchRequest(fetchRequest)) as? [T] ?? []
+			return (try? inContext.fetch(fetchRequest)) as? [T] ?? []
 	}
 
 
   public class func findWhere<T: NSManagedObject>(
-    predicate: String,
+    _ predicate: String,
     inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
     ) -> [T] {
 
     let fetchRequest = NSFetchRequest(entityName: entityName)
     fetchRequest.predicate = NSPredicate(format: predicate)
 
-    return (try? inContext.executeFetchRequest(fetchRequest)) as? [T] ?? []
+    return (try? inContext.fetch(fetchRequest)) as? [T] ?? []
   }
 
 
-	public class func all<T: NSManagedObject>(inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext) -> [T] {
+	public class func all<T: NSManagedObject>(_ inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext) -> [T] {
 		return findWhere(inContext: inContext)
 	}
 
 
 	public class func fetchedResultsController (
-		predicate: NSPredicate? = .None,
+		_ predicate: NSPredicate? = .none,
 		orderBy: [NSSortDescriptor],
-		sectionNameKeyPath: String? = .None,
+		sectionNameKeyPath: String? = .none,
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
-		) -> NSFetchedResultsController {
+		) -> NSFetchedResultsController<AnyObject> {
 
 			let fetchRequest = NSFetchRequest(entityName: entityName)
 			fetchRequest.predicate = predicate
@@ -323,7 +323,7 @@ public extension NSManagedObject {
 				fetchRequest: fetchRequest,
 				managedObjectContext: inContext,
 				sectionNameKeyPath: sectionNameKeyPath,
-				cacheName: .None)
+				cacheName: .none)
 	}
 
 }

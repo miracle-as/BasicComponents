@@ -18,7 +18,7 @@ extension String {
       }
       return result
       }
-      .stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
+      .trimmingCharacters(in: .whitespacesAndNewlines())
   }
 
   

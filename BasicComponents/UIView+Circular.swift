@@ -29,12 +29,12 @@ public extension UIView {
   @IBInspectable public var borderColor: UIColor? {
     get {
       if let color = layer.borderColor {
-        return UIColor(CGColor: color)
+        return UIColor(cgColor: color)
       }
-      return .None
+      return .none
     }
     set {
-      layer.borderColor = newValue != .None ? newValue!.CGColor : .None
+      layer.borderColor = newValue != .none ? newValue!.cgColor : .none
     }
   }
 }

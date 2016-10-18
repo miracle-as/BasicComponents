@@ -11,13 +11,13 @@ import UIKit
 import CoreData
 
 
-public class CoreDataFetchControllerDataSource: NSObject {
+open class CoreDataFetchControllerDataSource: NSObject {
 
-  weak private var tableView: UITableView!
-  private let fetchController: NSFetchedResultsController
-  private let cellGenerator: (tableView: UITableView, item: AnyObject, indexPath: NSIndexPath) -> UITableViewCell?
+  weak fileprivate var tableView: UITableView!
+  fileprivate let fetchController: NSFetchedResultsController<AnyObject>
+  fileprivate let cellGenerator: (_ tableView: UITableView, _ item: AnyObject, _ indexPath: IndexPath) -> UITableViewCell?
 
-  public init(fetchController: NSFetchedResultsController, forTableView: UITableView, cellForRow: (tableView: UITableView, item: AnyObject, indexPath: NSIndexPath) -> UITableViewCell?) {
+  public init(fetchController: NSFetchedResultsController<AnyObject>, forTableView: UITableView, cellForRow: (_ tableView: UITableView, _ item: AnyObject, _ indexPath: IndexPath) -> UITableViewCell?) {
 
     tableView = forTableView
     self.fetchController = fetchController
@@ -40,60 +40,60 @@ public class CoreDataFetchControllerDataSource: NSObject {
 
 extension CoreDataFetchControllerDataSource: UITableViewDataSource {
 
-  public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return fetchController.sections?[section].numberOfObjects ?? 0
   }
 
 
-  public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let item = fetchController.objectAtIndexPath(indexPath)
+  public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let item = fetchController.object(at: indexPath)
     return cellGenerator(tableView: tableView, item: item, indexPath: indexPath) ?? UITableViewCell()
   }
 }
 
 
 extension CoreDataFetchControllerDataSource: NSFetchedResultsControllerDelegate {
-  public func controllerWillChangeContent(controller: NSFetchedResultsController) {
+  public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     tableView.beginUpdates()
   }
 
 
-  public func controllerDidChangeContent(controller: NSFetchedResultsController) {
+  public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     tableView.endUpdates()
   }
 
 
-  public func controller(controller: NSFetchedResultsController,
-                         didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-                                          atIndex sectionIndex: Int,
-                                                  forChangeType type: NSFetchedResultsChangeType) {
+  public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                         didChange sectionInfo: NSFetchedResultsSectionInfo,
+                                          atSectionIndex sectionIndex: Int,
+                                                  for type: NSFetchedResultsChangeType) {
 
     switch type {
-    case .Insert:
-      tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
-    case .Delete:
-      tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+    case .insert:
+      tableView.insertSections(IndexSet(integer: sectionIndex), with: .automatic)
+    case .delete:
+      tableView.deleteSections(IndexSet(integer: sectionIndex), with: .automatic)
     default: break
     }
   }
 
 
-  public func controller(controller: NSFetchedResultsController,
-                         didChangeObject anObject: AnyObject,
-                                         atIndexPath indexPath: NSIndexPath?,
-                                                     forChangeType type: NSFetchedResultsChangeType,
-                                                                   newIndexPath: NSIndexPath?) {
+  public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                         didChange anObject: Any,
+                                         at indexPath: IndexPath?,
+                                                     for type: NSFetchedResultsChangeType,
+                                                                   newIndexPath: IndexPath?) {
 
     switch (type, indexPath, newIndexPath) {
-    case (.Insert, _, let newIndexPath?):
-      tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Automatic)
-    case (.Delete, let indexPath?, _):
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-    case (.Update, let indexPath?, _):
-      tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-    case (.Move, let indexPath?, let newIndexPath?):
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-      tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Automatic)
+    case (.insert, _, let newIndexPath?):
+      tableView.insertRows(at: [newIndexPath], with: .automatic)
+    case (.delete, let indexPath?, _):
+      tableView.deleteRows(at: [indexPath], with: .automatic)
+    case (.update, let indexPath?, _):
+      tableView.reloadRows(at: [indexPath], with: .automatic)
+    case (.move, let indexPath?, let newIndexPath?):
+      tableView.deleteRows(at: [indexPath], with: .automatic)
+      tableView.insertRows(at: [newIndexPath], with: .automatic)
     default: break
     }
   }

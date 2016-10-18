@@ -11,7 +11,7 @@ import UIKit
 import Whisper
 import DynamicColor
 
-public func statusBarNotify(message: String, color: UIColor = .clearColor()) {
+public func statusBarNotify(_ message: String, color: UIColor = .clear()) {
   let murmur = Murmur(title: message, backgroundColor: color, titleColor: color.isLightColor() ? .blackColor() : .whiteColor())
   show(whistle: murmur, action: .Show(2))
 }
@@ -19,48 +19,48 @@ public func statusBarNotify(message: String, color: UIColor = .clearColor()) {
 
 public extension UIViewController {
 
-  public func askUserFor(title: String, message: String, whenAsked: (ok: Bool) -> Void) {
-    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+  public func askUserFor(_ title: String, message: String, whenAsked: @escaping (_ ok: Bool) -> Void) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-    let cancelAction = UIAlertAction(title: "Annuller", style: .Cancel) { _ in
-      whenAsked(ok: false)
+    let cancelAction = UIAlertAction(title: "Annuller", style: .cancel) { _ in
+      whenAsked(false)
     }
     alertController.addAction(cancelAction)
 
-    let OKAction = UIAlertAction(title: "OK", style: .Default) { _ in
-      whenAsked(ok: true)
+    let OKAction = UIAlertAction(title: "OK", style: .default) { _ in
+      whenAsked(true)
     }
     alertController.addAction(OKAction)
 
-    self.presentViewController(alertController, animated: true) {
+    self.present(alertController, animated: true) {
     }
   }
 
 
-  public func alert(title: String = "Error", message: String, whenAcknowledge: () -> Void) {
-    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+  public func alert(_ title: String = "Error", message: String, whenAcknowledge: @escaping () -> Void) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-    let OKAction = UIAlertAction(title: "OK", style: .Default) { _ in
+    let OKAction = UIAlertAction(title: "OK", style: .default) { _ in
       whenAcknowledge()
     }
     alertController.addAction(OKAction)
 
-    self.presentViewController(alertController, animated: true) {
+    self.present(alertController, animated: true) {
     }
   }
 
 
   public func close(animate animated: Bool) {
     if let navigationController = navigationController {
-      navigationController.popViewControllerAnimated(animated)
+      navigationController.popViewController(animated: animated)
     } else {
-      dismissViewControllerAnimated(animated, completion: .None)
+      dismiss(animated: animated, completion: .none)
     }
   }
 
 
   public var isVisible: Bool {
-    if isViewLoaded() {
+    if isViewLoaded {
       return view.window != nil
     }
     return false
@@ -89,10 +89,10 @@ public extension UIViewController {
 
   public var isRunningInFullScreen: Bool {
     if let
-      delegate = UIApplication.sharedApplication().delegate,
-      window = delegate.window,
-      win = window {
-      return CGRectEqualToRect(win.frame, win.screen.bounds)
+      delegate = UIApplication.shared.delegate,
+      let window = delegate.window,
+      let win = window {
+      return win.frame.equalTo(win.screen.bounds)
     }
     return true
   }
@@ -100,19 +100,19 @@ public extension UIViewController {
 
   class var className: String {
     get {
-      return NSStringFromClass(self).componentsSeparatedByString(".").last!
+      return NSStringFromClass(self).components(separatedBy: ".").last!
     }
   }
 
 
-  private class func instanceFromMainStoryboardHelper<T>() -> T? {
+  fileprivate class func instanceFromMainStoryboardHelper<T>() -> T? {
     if let
-      appDelegate = UIApplication.sharedApplication().delegate,
-      rvc = appDelegate.window??.rootViewController,
-      controller = rvc.storyboard?.instantiateViewControllerWithIdentifier(className) as? T {
+      appDelegate = UIApplication.shared.delegate,
+      let rvc = appDelegate.window??.rootViewController,
+      let controller = rvc.storyboard?.instantiateViewController(withIdentifier: className) as? T {
       return controller
     }
-    return .None
+    return .none
   }
 
 

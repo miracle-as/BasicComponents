@@ -8,39 +8,39 @@
 
 import UIKit
 
-public class VerticalGradientView: UIView {
+open class VerticalGradientView: UIView {
 
   var gradientLayer: CAGradientLayer {
     return layer as! CAGradientLayer
   }
 
   @IBInspectable
-  public var topColor: UIColor? {
+  open var topColor: UIColor? {
     didSet {
       setColors()
     }
   }
 
   @IBInspectable
-  public var bottomColor: UIColor? {
+  open var bottomColor: UIColor? {
     didSet {
       setColors()
     }
   }
 
   func setColors() {
-    gradientLayer.colors = [topColor ?? .whiteColor(), bottomColor ?? .blackColor()].map { $0.CGColor }
-    backgroundColor = .clearColor()
+    gradientLayer.colors = [topColor ?? .white(), bottomColor ?? .black()].map { $0.cgColor }
+    backgroundColor = .clear()
   }
 
   @IBInspectable
-  public var position: Double = 0 {
+  open var position: Double = 0 {
     didSet {
       gradientLayer.startPoint = CGPoint(x: 0.5, y: position)
     }
   }
 
-  override public class func layerClass() -> AnyClass {
+  override open class var layerClass : AnyClass {
     return CAGradientLayer.self
   }
 }

@@ -1,28 +1,18 @@
 PODS:
-  - DynamicColor (2.4.0)
-  - Sugar (1.2.0)
-  - Whisper (3.1.1)
+  - DynamicColor (3.1.0)
+  - Sugar (2.0.0)
+  - Whisper (4.0.0)
 
 DEPENDENCIES:
-  - DynamicColor (~> 2.0)
-  - Sugar (from `https://github.com/pherret/Sugar`, branch `swift2.3`)
-  - Whisper (~> 3.0)
-
-EXTERNAL SOURCES:
-  Sugar:
-    :branch: swift2.3
-    :git: https://github.com/pherret/Sugar
-
-CHECKOUT OPTIONS:
-  Sugar:
-    :commit: ff0eb951336bfc151f9a7d0c42aeff4a6d664f50
-    :git: https://github.com/pherret/Sugar
+  - DynamicColor
+  - Sugar
+  - Whisper
 
 SPEC CHECKSUMS:
-  DynamicColor: 2f3fd61053684667bad9f03045dcf9a2a5a007ea
-  Sugar: 556b623f0f8846cf08de7302701892f11d567419
-  Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
+  DynamicColor: 4dec283a881f7f9d9f3bc88fb5f306724242575f
+  Sugar: f45b46cae3d198222a042b9ecf1ce3d44ab8e764
+  Whisper: 08be92623311f8e53201e62e17f6d7b9599a4714
 
-PODFILE CHECKSUM: afce0ddc43bb5bae75d95984481785b39d543e80
+PODFILE CHECKSUM: 72565c9e4adc2c2e7619f76d5750f9613f7ea6d7
 
 COCOAPODS: 1.1.0.rc.2
