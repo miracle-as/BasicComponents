@@ -54,28 +54,26 @@ open class CoreDataManager {
 	}()
 
 
-	fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
-		var coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-		let storeOptions  = [NSMigratePersistentStoresAutomaticallyOption : true]
-		let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("\(Application.executable).sqlite")
+  fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+    var coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+    let storeOptions  = [NSMigratePersistentStoresAutomaticallyOption : true]
+    let url = self.applicationDocumentsDirectory.appendingPathComponent("\(Application.executable).sqlite")
 
-		do {
-			try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: storeOptions)
-		} catch {
-			print("CoreData ERROR, There was an error creating or loading the application's saved data.")
+    do {
+      try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: storeOptions)
+    } catch {
+      print("CoreData ERROR, There was an error creating or loading the application's saved data.")
 
-			do {
-        if let url = url {
-          try FileManager.defaultManager().removeItemAtURL(url)
-        }
-				try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: storeOptions)
-			} catch {
-				fatalError("CoreData ERROR, There was an error creating or loading the application's saved data.")
-			}
-		}
+      do {
+        try FileManager.default.removeItem(at: url)
+        try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: storeOptions)
+      } catch {
+        fatalError("CoreData ERROR, There was an error creating or loading the application's saved data.")
+      }
+    }
 
-		return coordinator
-	}()
+    return coordinator
+  }()
 
 
 	fileprivate lazy var managedObjectContext: NSManagedObjectContext = {
@@ -187,7 +185,7 @@ public extension NSManagedObject {
 
 
 	public class func removeAllAndWait(_ inContext: NSManagedObjectContext) {
-		if let entities = (try? inContext.fetch(NSFetchRequest(entityName: entityName))) as? [NSManagedObject] {
+		if let entities = (try? inContext.fetch(NSFetchRequest<NSManagedObject>(entityName: entityName))) {
 			entities.forEach(inContext.delete(_:))
 		}
 
@@ -197,7 +195,7 @@ public extension NSManagedObject {
   public class func removeAll(_ whenDone:(() -> Void)? = .none) {
     CoreDataManager.saveInBackgroundContext(
       inContext: { context in
-        if let entities = (try? context.fetch(NSFetchRequest(entityName: entityName))) as? [NSManagedObject] {
+        if let entities = (try? context.fetch(NSFetchRequest<NSManagedObject>(entityName: entityName))) {
           entities.forEach(context.delete(_:))
         }},
       compleated: {
@@ -242,22 +240,21 @@ public extension NSManagedObject {
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext,
 		block:((_ entity: T, _ exists: Bool) -> Void)?) -> T {
 
-			let fetchRequest = NSFetchRequest(entityName: entityName)
+			let fetchRequest = NSFetchRequest<T>(entityName: entityName)
 			fetchRequest.predicate = NSPredicate(format: "%K == %@", whereProperty, hasValue)
 
-			let entity = (try? inContext.fetch(fetchRequest).first) as? T
+    let entities = (try? inContext.fetch(fetchRequest)) ?? []
+    let entity = entities.first
 
 			if let entity = entity {
 				if let block = block {
-					block(entity: entity, exists: true)
+					block(entity, true)
 				}
 				return entity
 			} else {
         let entity = createEntity(inContext) as! T // swiftlint:disable:this force_cast
 
-				if let v = hasValue as? AnyObject {
-					entity.setValue(v, forKeyPath: whereProperty)
-				}
+        entity.setValue(hasValue, forKeyPath: whereProperty)
 
 				if let block = block {
 					block(entity, false)
@@ -267,16 +264,16 @@ public extension NSManagedObject {
 	}
 
 
-	public class func countEntities(
-		_ predicate: NSPredicate? = .none,
-		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
-		) -> Int {
+  public class func countEntities(
+    _ predicate: NSPredicate? = .none,
+    inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
+    ) -> Int {
 
-			let fetchRequest = NSFetchRequest(entityName: entityName)
-			fetchRequest.predicate = predicate
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
+    fetchRequest.predicate = predicate
 
     return (try? inContext.count(for: fetchRequest)) ?? 0
-	}
+  }
 
 
 	public class func findWhere<T: NSManagedObject>(
@@ -284,10 +281,10 @@ public extension NSManagedObject {
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
 		) -> [T] {
 
-			let fetchRequest = NSFetchRequest(entityName: entityName)
+			let fetchRequest = NSFetchRequest<T>(entityName: entityName)
 			fetchRequest.predicate = predicate
 
-			return (try? inContext.fetch(fetchRequest)) as? [T] ?? []
+			return (try? inContext.fetch(fetchRequest)) ?? []
 	}
 
 
@@ -296,10 +293,10 @@ public extension NSManagedObject {
     inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
     ) -> [T] {
 
-    let fetchRequest = NSFetchRequest(entityName: entityName)
+    let fetchRequest = NSFetchRequest<T>(entityName: entityName)
     fetchRequest.predicate = NSPredicate(format: predicate)
 
-    return (try? inContext.fetch(fetchRequest)) as? [T] ?? []
+    return (try? inContext.fetch(fetchRequest)) ?? []
   }
 
 
@@ -308,14 +305,14 @@ public extension NSManagedObject {
 	}
 
 
-	public class func fetchedResultsController (
+	public class func fetchedResultsController<T: NSManagedObject> (
 		_ predicate: NSPredicate? = .none,
 		orderBy: [NSSortDescriptor],
 		sectionNameKeyPath: String? = .none,
 		inContext: NSManagedObjectContext = CoreDataManager.managedObjectContext
-		) -> NSFetchedResultsController<AnyObject> {
+		) -> NSFetchedResultsController<T> {
 
-			let fetchRequest = NSFetchRequest(entityName: entityName)
+			let fetchRequest = NSFetchRequest<T>(entityName: entityName)
 			fetchRequest.predicate = predicate
 			fetchRequest.sortDescriptors = orderBy
 

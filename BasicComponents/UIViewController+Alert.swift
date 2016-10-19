@@ -11,11 +11,10 @@ import UIKit
 import Whisper
 import DynamicColor
 
-public func statusBarNotify(_ message: String, color: UIColor = .clear()) {
-  let murmur = Murmur(title: message, backgroundColor: color, titleColor: color.isLightColor() ? .blackColor() : .whiteColor())
-  show(whistle: murmur, action: .Show(2))
+public func statusBarNotify(_ message: String, color: UIColor = .clear) {
+  let murmur = Murmur(title: message, backgroundColor: color, titleColor: color.isLight() ? .black : .white)
+  show(whistle: murmur, action: .show(2))
 }
-
 
 public extension UIViewController {
 
