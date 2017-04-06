@@ -18,15 +18,15 @@ public func statusBarNotify(message: String, color: UIColor = .clearColor()) {
 
 public extension UIViewController {
 
-  public func askUserFor(title: String, message: String, whenAsked: (ok: Bool) -> Void) {
+    public func askUserFor(title: String, message: String, okTitle: String = "OK", cancelTitle: String = "Cancel", whenAsked: (ok: Bool) -> Void) {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
 
-    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in
+    let cancelAction = UIAlertAction(title: cancelTitle, style: .Cancel) { _ in
       whenAsked(ok: false)
     }
     alertController.addAction(cancelAction)
 
-    let OKAction = UIAlertAction(title: "OK", style: .Default) { _ in
+    let OKAction = UIAlertAction(title: okTitle, style: .Default) { _ in
       whenAsked(ok: true)
     }
     alertController.addAction(OKAction)

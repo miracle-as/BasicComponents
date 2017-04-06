@@ -56,7 +56,7 @@ public class CoreDataManager {
 
 	private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
 		var coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-		let storeOptions  = [NSMigratePersistentStoresAutomaticallyOption : true]
+        let storeOptions  = [NSMigratePersistentStoresAutomaticallyOption : true, NSInferMappingModelAutomaticallyOption: true]
 		let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("\(Application.executable).sqlite")
 
 		do {
@@ -65,7 +65,7 @@ public class CoreDataManager {
 			print("CoreData ERROR, There was an error creating or loading the application's saved data.")
 
 			do {
-				try NSFileManager.defaultManager().removeItemAtURL(url)
+				try NSFileManager.defaultManager().removeItemAtURL(url!)
 				try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: storeOptions)
 			} catch {
 				fatalError("CoreData ERROR, There was an error creating or loading the application's saved data.")
@@ -241,7 +241,7 @@ public extension NSManagedObject {
 			let fetchRequest = NSFetchRequest(entityName: entityName)
 			fetchRequest.predicate = predicate
 
-			return inContext.countForFetchRequest(fetchRequest, error: nil)
+			return (try? inContext.countForFetchRequest(fetchRequest)) ?? 0
 	}
 
 

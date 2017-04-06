@@ -16,7 +16,7 @@ public protocol CoreDataTableViewController: UITableViewDataSource, NSFetchedRes
 }
 
 // MARK:- UITableViewDataSource
-extension CoreDataTableViewController {
+public extension CoreDataTableViewController {
   private var _fetchedResultsController: NSFetchedResultsController {
     if fetchedResultsController.fetchedObjects == nil {
       do {
@@ -29,29 +29,30 @@ extension CoreDataTableViewController {
     return fetchedResultsController
   }
 
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return _fetchedResultsController.sections?.count ?? 0
   }
 
 
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return _fetchedResultsController.sections?[section].numberOfObjects ?? 0
   }
+
 }
 
 // MARK:- NSFetchedResultsControllerDelegate
-extension CoreDataTableViewController {
-  func controllerWillChangeContent(controller: NSFetchedResultsController) {
+public extension CoreDataTableViewController {
+  public func controllerWillChangeContent(controller: NSFetchedResultsController) {
     tableView.beginUpdates()
   }
 
 
-  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+  public func controllerDidChangeContent(controller: NSFetchedResultsController) {
     tableView.endUpdates()
   }
 
 
-  func controller(controller: NSFetchedResultsController,
+  public func controller(controller: NSFetchedResultsController,
                   didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
                                    atIndex sectionIndex: Int,
                                            forChangeType type: NSFetchedResultsChangeType) {
@@ -66,7 +67,7 @@ extension CoreDataTableViewController {
   }
 
 
-  func controller(controller: NSFetchedResultsController,
+  public func controller(controller: NSFetchedResultsController,
                   didChangeObject anObject: AnyObject,
                                   atIndexPath indexPath: NSIndexPath?,
                                               forChangeType type: NSFetchedResultsChangeType,
